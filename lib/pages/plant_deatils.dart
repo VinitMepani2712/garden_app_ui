@@ -40,6 +40,23 @@ class _PlantDetailPageState extends State<PlantDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Container(
+          width: 325,
+          child: FloatingActionButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(180),
+              ),
+              backgroundColor: Color(0xff475E3E),
+              onPressed: () {},
+              child: Text(
+                "Buy Now",
+                style: TextStyle(color: Colors.white),
+              )),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -171,22 +188,22 @@ class _PlantDetailPageState extends State<PlantDetailPage> {
                   SizedBox(
                     height: 05,
                   ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 20),
-                    width: MediaQuery.of(context).size.width,
-                    child: TextButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Color(0xff475E3E),
-                        ),
-                      ),
-                      child: Text(
-                        "Buy Now!",
-                        style: TextStyle(color: Color(0xffF0F4EF)),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   padding: EdgeInsets.only(bottom: 20),
+                  //   width: MediaQuery.of(context).size.width,
+                  //   child: TextButton(
+                  //     onPressed: () {},
+                  //     style: ButtonStyle(
+                  //       backgroundColor: MaterialStateProperty.all(
+                  //         Color(0xff475E3E),
+                  //       ),
+                  //     ),
+                  //     child: Text(
+                  //       "Buy Now!",
+                  //       style: TextStyle(color: Color(0xffF0F4EF)),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
