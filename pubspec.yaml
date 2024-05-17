@@ -37,6 +37,7 @@ dependencies:
   shape_of_view_null_safe: ^3.0.0
   google_fonts: ^6.2.1
   curved_navigation_bar: ^1.0.3
+  flutter_screenutil: ^5.9.1
 
 dev_dependencies:
   flutter_test:

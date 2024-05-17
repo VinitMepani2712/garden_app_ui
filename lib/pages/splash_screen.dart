@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:garden_app_ui/pages/dashboard_screen.dart';
+import 'package:garden_app_ui/bottombar/bottom_nav_bar.dart';
+import 'package:garden_app_ui/pages/home_screen.dart';
 import 'package:shape_of_view_null_safe/shape_of_view_null_safe.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -57,7 +58,7 @@ class SplashScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DashBoardScreen()));
+            MaterialPageRoute(builder: (context) => BottomNavBarPage()));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 32),
