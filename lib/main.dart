@@ -4,7 +4,6 @@ import 'package:garden_app_ui/pages/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  
   runApp(const MyApp());
 }
 

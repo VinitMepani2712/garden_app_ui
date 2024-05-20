@@ -225,26 +225,29 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         selectedCategoryIndex = index;
       }),
-      child: Container(
-        margin: EdgeInsets.only(left: index == 0 ? 0 : 10.w),
-        height: 40.h,
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.r),
-          color:
-              isCategoryClicked[index] ? Color(0xff475E3E) : Colors.transparent,
-          border: isCategoryClicked[index]
-              ? null
-              : Border.all(color: Color(0xffD0D5DD)),
-        ),
-        child: Center(
-          child: Text(
-            categoryName,
-            style: TextStyle(
-              color:
-                  isCategoryClicked[index] ? Colors.white : Color(0xffD0D5DD),
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8),
+        child: Container(
+          height: 40.h,
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.r),
+            color: isCategoryClicked[index]
+                ? Color(0xff475E3E)
+                : Colors.transparent,
+            border: isCategoryClicked[index]
+                ? null
+                : Border.all(color: Color(0xffD0D5DD)),
+          ),
+          child: Center(
+            child: Text(
+              categoryName,
+              style: TextStyle(
+                color:
+                    isCategoryClicked[index] ? Colors.white : Color(0xffD0D5DD),
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ),
@@ -261,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: filteredPlants.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 0.70,
+          childAspectRatio: 0.75,
           crossAxisSpacing: 20.w,
           mainAxisSpacing: 20.h,
         ),
@@ -357,6 +360,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       plant.imagePath,
                       height: 130.h,
                       fit: BoxFit.fitHeight,
+                      alignment: Alignment.center,
                     ),
                   ),
                   SizedBox(height: 10.0.h),
