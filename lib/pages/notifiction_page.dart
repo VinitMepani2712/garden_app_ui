@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:garden_app_ui/pages/widget_support.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -61,8 +62,8 @@ class _NotificationPageState extends State<NotificationPage> {
                                     CircleAvatar(
                                       minRadius: 35,
                                       maxRadius: 35,
-                                      foregroundImage:
-                                          AssetImage("assets/images/2.png"),
+                                      foregroundImage: AssetImage(
+                                          "assets/images/profile.png"),
                                     ),
                                     Positioned(
                                       top: 35,
@@ -87,9 +88,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                     color: Color(0xff0E74BC)),
                               ),
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
+                            SizedBox(height: 10.h),
                             Card(
                               color: Color(0xffE4EFF7),
                               elevation: 5,
@@ -101,8 +100,8 @@ class _NotificationPageState extends State<NotificationPage> {
                                     CircleAvatar(
                                       minRadius: 35,
                                       maxRadius: 35,
-                                      foregroundImage:
-                                          AssetImage("assets/images/2.png"),
+                                      foregroundImage: AssetImage(
+                                          "assets/images/profile.png"),
                                     ),
                                     Positioned(
                                       top: 35,
@@ -127,9 +126,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                     color: Color(0xff0E74BC)),
                               ),
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
+                            SizedBox(height: 10.h),
                             Card(
                               color: Color(0xffE4EFF7),
                               elevation: 5,
@@ -141,8 +138,8 @@ class _NotificationPageState extends State<NotificationPage> {
                                     CircleAvatar(
                                       minRadius: 35,
                                       maxRadius: 35,
-                                      foregroundImage:
-                                          AssetImage("assets/images/2.png"),
+                                      foregroundImage: AssetImage(
+                                          "assets/images/profile.png"),
                                     ),
                                     Positioned(
                                       top: 35,
@@ -167,9 +164,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                     color: Color(0xff0E74BC)),
                               ),
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
+                            SizedBox(height: 10.h),
                             Card(
                               elevation: 1,
                               color: Colors.white,
@@ -181,8 +176,8 @@ class _NotificationPageState extends State<NotificationPage> {
                                     CircleAvatar(
                                       minRadius: 35,
                                       maxRadius: 35,
-                                      foregroundImage:
-                                          AssetImage("assets/images/2.png"),
+                                      foregroundImage: AssetImage(
+                                          "assets/images/profile.png"),
                                     ),
                                     Positioned(
                                       top: 35,
@@ -205,9 +200,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                     style: AppWidget.priceTextStyle()),
                               ),
                             ),
-                            SizedBox(
-                              height: 05,
-                            ),
+                            SizedBox(height: 05.h),
                             Text(
                               'Yesterday',
                               style: AppWidget.courseLightTextStyle(),
@@ -223,8 +216,8 @@ class _NotificationPageState extends State<NotificationPage> {
                                     CircleAvatar(
                                       minRadius: 35,
                                       maxRadius: 35,
-                                      foregroundImage:
-                                          AssetImage("assets/images/2.png"),
+                                      foregroundImage: AssetImage(
+                                          "assets/images/profile.png"),
                                     ),
                                     Positioned(
                                       top: 35,
@@ -247,9 +240,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                     style: AppWidget.priceTextStyle()),
                               ),
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
+                            SizedBox(height: 10.h),
                             Card(
                               elevation: 1,
                               color: Colors.white,
@@ -261,8 +252,8 @@ class _NotificationPageState extends State<NotificationPage> {
                                     CircleAvatar(
                                       minRadius: 35,
                                       maxRadius: 35,
-                                      foregroundImage:
-                                          AssetImage("assets/images/2.png"),
+                                      foregroundImage: AssetImage(
+                                          "assets/images/profile.png"),
                                     ),
                                     Positioned(
                                       top: 35,
@@ -285,9 +276,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                     style: AppWidget.priceTextStyle()),
                               ),
                             ),
-                            SizedBox(
-                              height: 05,
-                            ),
+                            SizedBox(height: 05.h),
                           ],
                         ),
                       ),
@@ -308,7 +297,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                     minRadius: 35,
                                     maxRadius: 35,
                                     foregroundImage:
-                                        AssetImage("assets/images/2.png"),
+                                        AssetImage("assets/images/profile.png"),
                                   ),
                                   Positioned(
                                     top: 35,
@@ -329,9 +318,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                   color: Color(0xff0E74BC)),
                             ),
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
+                          SizedBox(height: 10.h),
                           Card(
                             elevation: 5,
                             child: ListTile(
@@ -343,7 +330,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                     minRadius: 35,
                                     maxRadius: 35,
                                     foregroundImage:
-                                        AssetImage("assets/images/2.png"),
+                                        AssetImage("assets/images/profile.png"),
                                   ),
                                   Positioned(
                                     top: 35,
@@ -364,9 +351,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                   color: Color(0xff0E74BC)),
                             ),
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
+                          SizedBox(height: 10.h),
                           Card(
                             elevation: 5,
                             child: ListTile(
@@ -378,7 +363,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                     minRadius: 35,
                                     maxRadius: 35,
                                     foregroundImage:
-                                        AssetImage("assets/images/2.png"),
+                                        AssetImage("assets/images/profile.png"),
                                   ),
                                   Positioned(
                                     top: 35,

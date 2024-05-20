@@ -1,46 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:garden_app_ui/pages/cart_screen.dart';
 import 'package:garden_app_ui/pages/favorite_screen.dart';
 import 'package:garden_app_ui/pages/home_screen.dart';
 import 'package:garden_app_ui/pages/profile_screen.dart';
+import 'package:garden_app_ui/pages/qr_screen.dart';
 
-class BottomNavBarPage extends StatefulWidget {
-  const BottomNavBarPage({super.key});
+
+class BottomNavBarScreen extends StatefulWidget {
+  const BottomNavBarScreen({Key? key}) : super(key: key);
 
   @override
-  State<BottomNavBarPage> createState() => _BottomNavBarPageState();
+  State<BottomNavBarScreen> createState() => _BottomNavBarScreenState();
 }
 
-class _BottomNavBarPageState extends State<BottomNavBarPage> {
+class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   int currentTabIndex = 0;
   late List<Widget> pages;
-  late HomeScreen homeScreen;
-  late FavoriteScreen favoriteScreen;
-  late CartScreen cartScreen;
-  late ProfileScreen profileScreen;
 
   @override
   void initState() {
     super.initState();
-    homeScreen = HomeScreen();
-    favoriteScreen = FavoriteScreen();
-    cartScreen = const CartScreen();
-    profileScreen = ProfileScreen(
-      name: "",
-      location: "",
-    );
-
-    pages = [homeScreen, favoriteScreen, cartScreen, profileScreen];
+    pages = [
+      HomeScreen(),
+      FavoriteScreen(),
+      CartScreen(),
+      ProfileScreen(
+        name: "Jona",
+        location: "Surat, Gujarat, India",
+        icon: Icons.location_on_outlined,
+        circleAvatarImage: "assets/images/profile.png",
+      ),
+    ];
   }
 
   void _onItemTapped(int index) {
-    if (index == 3) {
-      return _onItemTapped(2);
-    }
-    // if (index == 2) {
-    //   return _onItemTapped(0);
-    // }
-
     setState(() {
       currentTabIndex = index;
     });
@@ -53,76 +47,100 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(180),
+          borderRadius: BorderRadius.circular(180.w),
         ),
         backgroundColor: Color(0xff475E3E),
-        onPressed: () {},
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QRScreen(),
+          ),
+        ),
         child: Icon(
           Icons.qr_code_scanner_rounded,
           color: Colors.white,
         ),
       ),
       body: pages[currentTabIndex],
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.0),
-            topRight: Radius.circular(30.0),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10,
-              spreadRadius: 1,
-            ),
-          ],
+      bottomNavigationBar: CustomBottomNavBar(
+        currentIndex: currentTabIndex,
+        onItemTapped: _onItemTapped,
+      ),
+    );
+  }
+}
+
+class CustomBottomNavBar extends StatelessWidget {
+  final int currentIndex;
+  final ValueChanged<int> onItemTapped;
+
+  CustomBottomNavBar({
+    required this.currentIndex,
+    required this.onItemTapped,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.w),
+          topRight: Radius.circular(30.w),
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.0),
-            topRight: Radius.circular(30.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 10.w,
+            spreadRadius: 1,
           ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProfileScreen(
-                                    name: "Vinit",
-                                    location: "Surat, Gujarat, India",
-                                  )));
-                    },
-                    child: Icon(Icons.person)),
-                label: '',
-              ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.w),
+          topRight: Radius.circular(30.w),
+        ),
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 10.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavItem(Icons.home, 0),
+              _buildNavItem(Icons.favorite, 1),
+              SizedBox(width: 50.w),
+              _buildNavItem(Icons.shopping_cart, 2),
+              _buildNavItem(Icons.person, 3),
             ],
-            currentIndex: currentTabIndex,
-            selectedItemColor: Color(0xff475E3E),
-            unselectedItemColor: Color(0xffD0D5DD),
-            onTap: _onItemTapped,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(IconData icon, int index) {
+    return GestureDetector(
+      onTap: () => onItemTapped(index),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            color:
+                currentIndex == index ? Color(0xff475E3E) : Color(0xffD0D5DD),
+          ),
+          Container(
+            height: 4.h,
+            width: 4.w,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: currentIndex == index
+                  ? Color(0xff475E3E)
+                  : Colors.transparent,
+            ),
+          ),
+        ],
       ),
     );
   }
