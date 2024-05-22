@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Row(
             children: [
               GestureDetector(
-                onTap: () => Navigator.push(
+                onTap: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ProfileScreen(
@@ -106,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Spacer(),
               GestureDetector(
-                onTap: () => Navigator.push(
+                onTap: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => NotificationPage()),
                 ),
@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         GestureDetector(
-          onTap: () => Navigator.push(
+          onTap: () => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => ProfileScreen(
@@ -283,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildCard(BuildContext context, PlantModel plant, int index) {
     return GestureDetector(
-      onTap: () => Navigator.push(
+      onTap: () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => PlantDetailScreen(

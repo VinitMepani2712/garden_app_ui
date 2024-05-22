@@ -6,7 +6,6 @@ import 'package:garden_app_ui/pages/home_screen.dart';
 import 'package:garden_app_ui/pages/profile_screen.dart';
 import 'package:garden_app_ui/pages/qr_screen.dart';
 
-
 class BottomNavBarScreen extends StatefulWidget {
   const BottomNavBarScreen({Key? key}) : super(key: key);
 
@@ -50,7 +49,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
           borderRadius: BorderRadius.circular(180.w),
         ),
         backgroundColor: Color(0xff475E3E),
-        onPressed: () => Navigator.push(
+        onPressed: () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => QRScreen(),

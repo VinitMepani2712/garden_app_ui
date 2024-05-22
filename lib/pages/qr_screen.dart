@@ -39,12 +39,10 @@ class _QRScreenState extends State<QRScreen> {
               child: const Text('Generate QR Code'),
             ),
             const SizedBox(height: 20),
-            if (_controller.text.isNotEmpty)
-          
-            const SizedBox(height: 20),
+            if (_controller.text.isNotEmpty) const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => QRViewExample(
