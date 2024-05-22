@@ -1,11 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:garden_app_ui/model/category_model.dart';
+// import 'package:garden_app_ui/pages/favorite_screen.dart';
 import 'package:garden_app_ui/pages/notifiction_page.dart';
 import 'package:garden_app_ui/pages/plant_deatils_screen.dart';
 import 'package:garden_app_ui/pages/profile_screen.dart';
+import 'package:garden_app_ui/pages/globals.dart';
+
+import '../model/plant_model.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key});
@@ -20,6 +22,38 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedCategoryIndex = 0;
 
   final categories = ['All', 'Indoor', 'Outdoor', 'Thallophyta', 'Bryophyta'];
+
+  TextEditingController searchController = TextEditingController();
+  List<PlantModel> filteredPlants = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filteredPlants = plants; // Initially display all plants
+    searchController.addListener(_filterPlants);
+  }
+
+  @override
+  void dispose() {
+    searchController.removeListener(_filterPlants);
+    searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterPlants() {
+    final query = searchController.text.toLowerCase();
+    final selectedCategory = categories[selectedCategoryIndex];
+
+    setState(() {
+      filteredPlants = plants.where((plant) {
+        final nameLower = plant.name.toLowerCase();
+        final matchesName = nameLower.contains(query);
+        final matchesCategory =
+            selectedCategory == 'All' || plant.category == selectedCategory;
+        return matchesName && matchesCategory;
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,10 +187,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget searchBar(context) {
+  Widget searchBar(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.w),
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      margin: EdgeInsets.symmetric(horizontal: 10.w),
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
       height: 40.h,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
@@ -164,14 +198,21 @@ class _HomeScreenState extends State<HomeScreen> {
         color: Color(0xffF2F4F7),
       ),
       child: TextField(
+        controller: searchController,
         decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.search,
             color: Color(0xff98A2B3),
           ),
-          suffixIcon: Icon(
-            Icons.settings_input_component_outlined,
-            color: Color(0xff98A2B3),
+          suffixIcon: GestureDetector(
+            onTap: () {
+              searchController.clear();
+              _filterPlants();
+            },
+            child: Icon(
+              Icons.highlight_remove,
+              color: Color(0xff98A2B3),
+            ),
           ),
           border: InputBorder.none,
           fillColor: Color(0xffF2F4F7),
@@ -224,6 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         }
         selectedCategoryIndex = index;
+        _filterPlants();
       }),
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8),
@@ -256,15 +298,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget cardView(BuildContext context) {
-    String selectedCategory = categories[selectedCategoryIndex];
-    List<PlantModel> filteredPlants = getPlantsByCategory(selectedCategory);
-
     return Expanded(
       child: GridView.builder(
         itemCount: filteredPlants.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 0.75,
+          childAspectRatio: 0.65,
           crossAxisSpacing: 20.w,
           mainAxisSpacing: 20.h,
         ),
@@ -283,7 +322,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildCard(BuildContext context, PlantModel plant, int index) {
     return GestureDetector(
-      onTap: () => Navigator.pushReplacement(
+      onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => PlantDetailScreen(
@@ -311,9 +350,16 @@ class _HomeScreenState extends State<HomeScreen> {
               right: -10,
               top: 10,
               child: GestureDetector(
-                onTap: () => setState(() {
-                  isIconClickedList[index] = !isIconClickedList[index];
-                }),
+                onTap: () {
+                  setState(() {
+                    isIconClickedList[index] = !isIconClickedList[index];
+                    if (isIconClickedList[index]) {
+                      favoritePlants.add(plant);
+                    } else {
+                      favoritePlants.remove(plant);
+                    }
+                  });
+                },
                 child: CircleAvatar(
                   maxRadius: 15,
                   minRadius: 15,
@@ -328,24 +374,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+
+            // Add icon
             Positioned(
               right: -10,
-              top: 165,
-              child: GestureDetector(
-                onTap: () => setState(() {
-                  isIconClickedList[index] = !isIconClickedList[index];
-                }),
-                child: CircleAvatar(
-                  maxRadius: 15,
-                  minRadius: 15,
-                  backgroundColor: Color(0xffB5C9AD),
-                  child: Icon(
-                    Icons.add,
-                    size: 20,
-                    color: isIconClickedList[index]
-                        ? Colors.red
-                        : Color.fromARGB(255, 255, 255, 255),
-                  ),
+              top: 190,
+              child: CircleAvatar(
+                maxRadius: 15,
+                minRadius: 15,
+                backgroundColor: Color(0xffB5C9AD),
+                child: Icon(
+                  Icons.add,
+                  size: 20,
+                  color: Color.fromARGB(255, 255, 255, 255),
                 ),
               ),
             ),
@@ -364,20 +405,29 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(height: 10.0.h),
-                  Text(
-                    plant.name,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
+                  Flexible(
+                    child: Wrap(
+                      children: [
+                        Text(
+                          plant.name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 5.0.h),
+                  SizedBox(height: 30.0.h),
                   Container(
                     alignment: Alignment.center,
                     width: 50.w,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color(0xffFFFFFF)),
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xffFFFFFF),
+                    ),
                     child: Text(
                       '\u{20B9} ${plant.price}',
                       style: TextStyle(
@@ -386,7 +436,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 5.0.h),
                 ],
               ),
             ),

@@ -42,6 +42,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
@@ -49,7 +50,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
           borderRadius: BorderRadius.circular(180.w),
         ),
         backgroundColor: Color(0xff475E3E),
-        onPressed: () => Navigator.pushReplacement(
+        onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => QRScreen(),
@@ -81,6 +82,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 60,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
