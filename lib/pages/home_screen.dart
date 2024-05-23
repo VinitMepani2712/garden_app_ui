@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:garden_app_ui/model/category_model.dart';
-// import 'package:garden_app_ui/pages/favorite_screen.dart';
 import 'package:garden_app_ui/pages/notifiction_page.dart';
 import 'package:garden_app_ui/pages/plant_deatils_screen.dart';
 import 'package:garden_app_ui/pages/profile_screen.dart';
-import 'package:garden_app_ui/pages/globals.dart';
+import 'package:garden_app_ui/pages/globals.dart'; // Import global file
+import 'package:garden_app_ui/pages/favorite_screen.dart'; // Import favorite screen
 
 import '../model/plant_model.dart';
 
@@ -29,8 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    filteredPlants = plants; // Initially display all plants
+    filteredPlants = plants;
     searchController.addListener(_filterPlants);
+    _updateFavoriteIconState(); 
   }
 
   @override
@@ -53,6 +54,12 @@ class _HomeScreenState extends State<HomeScreen> {
         return matchesName && matchesCategory;
       }).toList();
     });
+  }
+
+  void _updateFavoriteIconState() {
+    for (int i = 0; i < plants.length; i++) {
+      isIconClickedList[i] = favoritePlants.contains(plants[i]);
+    }
   }
 
   @override
@@ -320,7 +327,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildCard(BuildContext context, PlantModel plant, int index) {
+// Import your PlantModel
+
+Widget buildCard(BuildContext context, PlantModel plant, int index) {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -445,3 +454,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+
+
+
+
