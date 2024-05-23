@@ -16,26 +16,30 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       appBar: AppBar(
         title: Text('Favorites'),
       ),
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // Number of columns
-          crossAxisSpacing: 10.0, // Spacing between columns
-          mainAxisSpacing: 10.0, // Spacing between rows
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.60,
+            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 10.0,
+          ),
+          itemCount: favoritePlants.length,
+          itemBuilder: (context, index) {
+            final plant = favoritePlants[index];
+            return buildPlantCard(plant);
+          },
         ),
-        itemCount: favoritePlants.length,
-        itemBuilder: (context, index) {
-          final plant = favoritePlants[index];
-          return buildPlantCard(plant);
-        },
       ),
     );
   }
 
   Widget buildPlantCard(PlantModel plant) {
-    return Card(
-      elevation: 3.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0.r),
+    return Container(
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 245, 241, 241),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,8 +51,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               ),
               child: Image.asset(
                 plant.imagePath,
-                height: 130.h,
-                fit: BoxFit.fitHeight,
               ),
             ),
           ),
