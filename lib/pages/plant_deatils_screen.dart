@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:garden_app_ui/model/product_details_model.dart';
 
 class PlantDetailsScreen extends StatefulWidget {
-  final PlantDetailsArguments args;
+  final PlantDetailsLikeModel args;
   final bool showDescription;
 
   PlantDetailsScreen({
@@ -71,7 +71,6 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                               : Color.fromARGB(255, 255, 255, 255),
                         ),
                       ),
-                      
                     ],
                   ),
                 ),

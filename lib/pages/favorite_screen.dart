@@ -10,7 +10,8 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  List<bool> isIconClickedList = List.generate(favoritePlants.length, (index) => false);
+  List<bool> isIconClickedList =
+      List.generate(favoritePlants.length, (index) => false);
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +39,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         ),
         itemCount: favoritePlants.length,
         itemBuilder: (context, index) {
-          final clothes = favoritePlants[index];
-          return buildPlantsCard(clothes, index);
+          final plants = favoritePlants[index];
+          return buildPlantsCard(plants, index);
         },
       ),
     );
@@ -47,41 +48,14 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
   Widget buildPlantsCard(PlantModel plant, int index) {
     return GestureDetector(
-      // onTap: () async {
-      //   final isFavorite = await Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => PlantDetailsScreen(
-      //         args: PlantDetailsArguments(
-      //             plant: item,
-      //             onFavoriteToggle: (isFavorite) {
-      //               setState(() {
-      //                 isIconClickedList[index] = isFavorite;
-      //               });
-      //             },
-      //             isFavorite: isIconClickedList[index]),
-      //       ),
-      //     ),
-      //   );
-
-      //   if (isFavorite != null) {
-      //     setState(() {
-      //       isIconClickedList[index] = isFavorite;
-      //       if (!isFavorite) {
-      //         favoritePlants.remove(item);
-      //       }
-      //     });
-      //   }
-      // },
-
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => PlantDetailsScreen(
-            args: PlantDetailsArguments(
+            args: PlantDetailsLikeModel(
                 plant: plant,
                 onFavoriteToggle: (isFavorite) {},
-                isFavorite: isIconClickedList[index]),
+                isFavorite: true),
           ),
         ),
       ),

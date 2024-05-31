@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Spacer(),
               GestureDetector(
-                onTap: () => Navigator.pushReplacement(
+                onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => NotificationPage()),
                 ),
@@ -333,7 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => PlantDetailsScreen(
-            args: PlantDetailsArguments(
+            args: PlantDetailsLikeModel(
                 plant: plant,
                 onFavoriteToggle: (isFavorite) {},
                 isFavorite: isIconClickedList[index]),
