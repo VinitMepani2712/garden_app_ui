@@ -10,7 +10,7 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  List<bool> isIconClickedList = List.generate(100, (index) => false);
+  List<bool> isIconClickedList = List.generate(favoritePlants.length, (index) => false);
 
   @override
   Widget build(BuildContext context) {
