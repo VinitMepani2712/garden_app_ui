@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:garden_app_ui/model/category_model.dart';
+import 'package:garden_app_ui/model/product_details_model.dart';
 
-class PlantDetailScreen extends StatefulWidget {
-  final PlantModel plant;
+class PlantDetailsScreen extends StatefulWidget {
+  final PlantDetailsArguments args;
   final bool showDescription;
 
-  PlantDetailScreen({required this.plant, this.showDescription = true});
+  PlantDetailsScreen({
+    required this.args,
+    this.showDescription = true,
+  });
 
   @override
-  _PlantDetailScreenState createState() => _PlantDetailScreenState();
+  _PlantDetailsScreenState createState() => _PlantDetailsScreenState();
 }
 
-class _PlantDetailScreenState extends State<PlantDetailScreen> {
+class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   int _counter = 1;
-  bool isIconClicked = false;
+  late bool isFavorite;
 
   void _incrementCounter() => setState(() => _counter++);
   void _decrementCounter() => setState(() => _counter > 1 ? _counter-- : null);
+
+  @override
+  void initState() {
+    super.initState();
+    isFavorite = widget.args.isFavorite;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,24 +62,21 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                               color: Colors.white),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () =>
-                            setState(() => isIconClicked = !isIconClicked),
-                        child: CircleAvatar(
-                          backgroundColor: Color(0xffB5C9AD),
-                          child: Icon(
-                            Icons.favorite,
-                            color: isIconClicked
-                                ? Colors.red
-                                : Color.fromARGB(255, 255, 255, 255),
-                          ),
+                      CircleAvatar(
+                        backgroundColor: Color(0xffB5C9AD),
+                        child: Icon(
+                          Icons.favorite,
+                          color: isFavorite
+                              ? Colors.red
+                              : Color.fromARGB(255, 255, 255, 255),
                         ),
                       ),
+                      
                     ],
                   ),
                 ),
                 Image.asset(
-                  widget.plant.imagePath,
+                  widget.args.plant.imagePath,
                   height: MediaQuery.of(context).size.height / 2.h,
                   width: MediaQuery.of(context).size.width / 1.3.w,
                   fit: BoxFit.fitWidth,
@@ -97,8 +102,8 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                         children: [
                           Flexible(
                             child: Text(
-                              widget.plant.name,
-                              maxLines: 2, // Limit to 2 lines
+                              widget.args.plant.name,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 24.sp, fontWeight: FontWeight.bold),
@@ -136,7 +141,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                         ],
                       ),
                       Text(
-                        '\u{20B9}${widget.plant.price}',
+                        '\u{20B9}${widget.args.plant.price}',
                         style: TextStyle(fontSize: 18.sp, color: Colors.grey),
                       ),
                       SizedBox(height: 20.h),
@@ -150,7 +155,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                               color: Colors.black),
                         ),
                         Text(
-                          widget.plant.description,
+                          widget.args.plant.description,
                           textAlign: TextAlign.justify,
                           style:
                               TextStyle(fontSize: 16.sp, color: Colors.black),

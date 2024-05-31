@@ -4,10 +4,10 @@ import 'package:garden_app_ui/model/category_model.dart';
 import 'package:garden_app_ui/pages/notifiction_page.dart';
 import 'package:garden_app_ui/pages/plant_deatils_screen.dart';
 import 'package:garden_app_ui/pages/profile_screen.dart';
-import 'package:garden_app_ui/pages/globals.dart'; // Import global file
-import 'package:garden_app_ui/pages/favorite_screen.dart'; // Import favorite screen
+import 'package:garden_app_ui/model/globals.dart';
 
 import '../model/plant_model.dart';
+import '../model/product_details_model.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key});
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     filteredPlants = plants;
     searchController.addListener(_filterPlants);
-    _updateFavoriteIconState(); 
+    _updateFavoriteIconState();
   }
 
   @override
@@ -327,15 +327,16 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-// Import your PlantModel
-
-Widget buildCard(BuildContext context, PlantModel plant, int index) {
+  Widget buildCard(BuildContext context, PlantModel plant, int index) {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => PlantDetailScreen(
-            plant: plant,
+          builder: (context) => PlantDetailsScreen(
+            args: PlantDetailsArguments(
+                plant: plant,
+                onFavoriteToggle: (isFavorite) {},
+                isFavorite: isIconClickedList[index]),
           ),
         ),
       ),
@@ -383,8 +384,6 @@ Widget buildCard(BuildContext context, PlantModel plant, int index) {
                 ),
               ),
             ),
-
-            // Add icon
             Positioned(
               right: -10,
               top: 190,
@@ -422,7 +421,7 @@ Widget buildCard(BuildContext context, PlantModel plant, int index) {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontSize: 16.0,
+                            fontSize: 14.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -454,8 +453,3 @@ Widget buildCard(BuildContext context, PlantModel plant, int index) {
     );
   }
 }
-
-
-
-
-
