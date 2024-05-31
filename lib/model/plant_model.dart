@@ -5,7 +5,8 @@ List<PlantModel> plants = [
     imagePath: 'assets/images/plant1.jpg',
     name: 'Indoor Fern',
     price: '200',
-    description: 'A perennial herbaceous plant with soft, green stems.',
+    description:
+        'Flamingo flowers are tropical plants native to South America, known for their vibrant red, heart-shaped flowers, which are actually modified leaves called spathes. The true flowers are tiny and grow on a stalk called the spadix, which protrudes from the center of the spathe Flamingo flowers come in a variety of colors, including pink, white, and purple, but red is the most common.,',
     category: 'Indoor',
   ),
   PlantModel(
@@ -57,7 +58,6 @@ List<PlantModel> plants = [
     description: 'A hardy plant that thrives in outdoor conditions.',
     category: 'Outdoor',
   ),
- 
   PlantModel(
     imagePath: 'assets/images/plant9.jpg',
     name: 'Outdoor Cactus',
@@ -135,7 +135,7 @@ List<PlantModel> plants = [
     description: 'An elegant flowering plant that thrives outdoors.',
     category: 'Outdoor',
   ),
-   PlantModel(
+  PlantModel(
     imagePath: 'assets/images/plant20.jpg',
     name: 'Indoor Cactus',
     price: '350',

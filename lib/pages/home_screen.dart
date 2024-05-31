@@ -7,7 +7,7 @@ import 'package:garden_app_ui/pages/profile_screen.dart';
 import 'package:garden_app_ui/model/globals.dart';
 
 import '../model/plant_model.dart';
-import '../model/product_details_model.dart';
+import '../model/plant_details_model.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key});
@@ -310,9 +310,9 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: filteredPlants.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 0.65,
-          crossAxisSpacing: 20.w,
-          mainAxisSpacing: 20.h,
+          childAspectRatio: 0.60,
+          crossAxisSpacing: 10.w,
+          mainAxisSpacing: 10.h,
         ),
         padding: EdgeInsets.all(10.w),
         itemBuilder: (context, index) {
@@ -340,24 +340,70 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      child: Container(
-        padding: EdgeInsets.only(left: 8.0, right: 20.0),
-        decoration: BoxDecoration(
-          color: Color(0xffF0F4EF),
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 5,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
+      child: Card(
+        color: const Color.fromARGB(255, 238, 238, 238),
+        elevation: 1,
         child: Stack(
           clipBehavior: Clip.none,
           children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      plant.imagePath,
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width * 10,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.0.h),
+                Flexible(
+                  child: Wrap(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          plant.name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20.0.h),
+                Padding(
+                  padding: EdgeInsets.only(left: 8.0),
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 50.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xffFFFFFF),
+                    ),
+                    child: Text(
+                      '\u{20B9} ${plant.price}',
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             Positioned(
-              right: -10,
+              right: 05,
               top: 10,
               child: GestureDetector(
                 onTap: () {
@@ -385,8 +431,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Positioned(
-              right: -10,
-              top: 190,
+              right: 05,
+              top: 210,
               child: CircleAvatar(
                 maxRadius: 15,
                 minRadius: 15,
@@ -396,55 +442,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   size: 20,
                   color: Color.fromARGB(255, 255, 255, 255),
                 ),
-              ),
-            ),
-            Container(
-              height: 200.0.h,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: Image.asset(
-                      plant.imagePath,
-                      height: 130.h,
-                      fit: BoxFit.fitHeight,
-                      alignment: Alignment.center,
-                    ),
-                  ),
-                  SizedBox(height: 10.0.h),
-                  Flexible(
-                    child: Wrap(
-                      children: [
-                        Text(
-                          plant.name,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 30.0.h),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 50.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(0xffFFFFFF),
-                    ),
-                    child: Text(
-                      '\u{20B9} ${plant.price}',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.green,
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ),
           ],

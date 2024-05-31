@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:garden_app_ui/model/globals.dart';
 import '../model/category_model.dart';
-import '../model/product_details_model.dart';
+import '../model/plant_details_model.dart';
 import 'plant_deatils_screen.dart';
 
 class FavoriteScreen extends StatefulWidget {
@@ -60,68 +61,87 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         ),
       ),
       child: Card(
-        color: Color.fromARGB(255, 223, 235, 219),
-        child: Container(
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        plant.imagePath,
-                        width: double.infinity,
-                        fit: BoxFit.contain,
+        color: const Color.fromARGB(255, 238, 238, 238),
+        elevation: 1,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      plant.imagePath,
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width * 10,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.0.h),
+                Flexible(
+                  child: Wrap(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          plant.name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20.0.h),
+                Padding(
+                  padding: EdgeInsets.only(left: 8.0),
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 50.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xffFFFFFF),
+                    ),
+                    child: Text(
+                      '\u{20B9} ${plant.price}',
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.green,
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          plant.name,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      '\u{20B9}${plant.price}',
-                      style: TextStyle(fontSize: 14, color: Colors.green),
-                    ),
-                  ),
-                ],
-              ),
-              Positioned(
-                top: 5,
-                right: 10,
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      if (!isIconClickedList[index]) {
-                        favoritePlants.remove(plant);
-                      }
-                    });
-                  },
-                  child: CircleAvatar(
-                    maxRadius: 15,
-                    minRadius: 15,
-                    backgroundColor: Color(0xffB5C9AD),
-                    child: Icon(Icons.favorite, size: 20, color: Colors.red),
-                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              top: 5,
+              right: 10,
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    if (!isIconClickedList[index]) {
+                      favoritePlants.remove(plant);
+                    }
+                  });
+                },
+                child: CircleAvatar(
+                  maxRadius: 15,
+                  minRadius: 15,
+                  backgroundColor: Color(0xffB5C9AD),
+                  child: Icon(Icons.favorite, size: 20, color: Colors.red),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
