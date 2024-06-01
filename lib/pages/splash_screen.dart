@@ -47,8 +47,12 @@ class SplashScreen extends StatelessWidget {
       );
 
   Widget myButton(BuildContext context) => GestureDetector(
-        onTap: () => Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => BottomNavBarScreen())),
+        onTap: () => Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BottomNavBarScreen(),
+          ),
+        ),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 32.w),
           height: 52.h,

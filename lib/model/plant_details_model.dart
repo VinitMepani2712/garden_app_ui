@@ -2,7 +2,7 @@ import 'package:garden_app_ui/model/category_model.dart';
 
 class PlantDetailsLikeModel {
   final PlantModel plant;
-  final bool isFavorite;
+  late final bool isFavorite;
   final Function(bool) onFavoriteToggle;
 
   PlantDetailsLikeModel({

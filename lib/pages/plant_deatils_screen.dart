@@ -89,11 +89,7 @@ int index = 0;
                   setState(() {
                     isFavorite = !isFavorite;
                     widget.args.onFavoriteToggle(isFavorite);
-                    // if (isIconClickedList[index]) {
-                    //   favoritePlants.add(plant);
-                    // } else {
-                    //   favoritePlants.remove(plant);
-                    // }
+                    
                   });
                 },
                 child: Container(
