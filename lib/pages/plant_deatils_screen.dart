@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:garden_app_ui/model/plant_details_model.dart';
-
-import '../model/globals.dart';
+import '../model/cart_model.dart';
+import '../model/globals.dart'; // Import the global variables
 
 class PlantDetailsScreen extends StatefulWidget {
   final PlantDetailsLikeModel args;
@@ -22,7 +22,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   late bool isFavorite;
   List<bool> isIconClickedList =
       List.generate(favoritePlants.length, (index) => false);
-int index = 0;
+  int index = 0;
 
   void _incrementCounter() => setState(() => _counter++);
   void _decrementCounter() => setState(() => _counter > 1 ? _counter-- : null);
@@ -56,7 +56,22 @@ int index = 0;
           borderRadius: BorderRadius.circular(180.r),
         ),
         backgroundColor: Color(0xff475E3E),
-        onPressed: () {},
+        onPressed: () {
+          final snackBar = SnackBar(
+            content: Text(
+              'Added ${widget.args.plant.name} x$_counter to the cart',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Color(0xff475E3E),
+            duration: Duration(seconds: 2),
+          );
+
+          cartItems.add(CartItem(plant: widget.args.plant, quantity: _counter));
+
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+         
+        },
         child: Text("Buy Now", style: TextStyle(color: Colors.white)),
       ),
     );
@@ -89,7 +104,6 @@ int index = 0;
                   setState(() {
                     isFavorite = !isFavorite;
                     widget.args.onFavoriteToggle(isFavorite);
-                    
                   });
                 },
                 child: Container(
