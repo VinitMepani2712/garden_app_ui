@@ -4,17 +4,17 @@ import 'package:garden_app_ui/pages/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'provider/favourite_screen_provider.dart';
-import 'provider/home_screen_provider.dart';
 
 void main() {
   runApp(
-    // MultiProvider(
-    //   providers: [
-    //      ChangeNotifierProvider(create: (context) => HomeProviderScreen()),
-    //     ChangeNotifierProvider(create: (context) => HomeScreenProvider()),
-    //   ],
-      MyApp(),
-    // ),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => HomeProviderScreen()),
+        //     ChangeNotifierProvider(create: (context) => HomeScreenProvider()),
+      ],
+      child: MyApp(),
+   
+    ),
   );
 }
 

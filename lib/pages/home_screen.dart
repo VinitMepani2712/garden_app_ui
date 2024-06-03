@@ -5,6 +5,8 @@ import 'package:garden_app_ui/pages/notifiction_page.dart';
 import 'package:garden_app_ui/pages/plant_deatils_screen.dart';
 import 'package:garden_app_ui/pages/profile_screen.dart';
 import 'package:garden_app_ui/model/globals.dart';
+import 'package:garden_app_ui/provider/favourite_screen_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../model/plant_model.dart';
 import '../model/plant_details_model.dart';
@@ -17,48 +19,50 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late HomeProviderScreen favoriteScreenProvider;
+
   List<bool> isIconClickedList = List.generate(100, (index) => false);
-  List<bool> isCategoryClicked = [true, false, false, false, false];
-  int selectedCategoryIndex = 0;
-
-  final categories = ['All', 'Indoor', 'Outdoor', 'Thallophyta', 'Bryophyta'];
-
-  TextEditingController searchController = TextEditingController();
-  List<PlantModel> filteredPlants = [];
 
   @override
   void initState() {
     super.initState();
-    filteredPlants = plants;
-    searchController.addListener(_filterPlants);
+    // filteredPlants = plantsDataDummy;
+    favoriteScreenProvider =
+        Provider.of<HomeProviderScreen>(context, listen: false);
+    favoriteScreenProvider.installDataLoad();
+
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //   (timeStamp) {
+    //     favoriteScreenProvider.installDataLoad();
+    //   },
+    // );
+    // searchController.addListener(_filterPlants);
     _updateFavoriteIconState();
   }
 
   @override
   void dispose() {
-    searchController.removeListener(_filterPlants);
-    searchController.dispose();
+    // searchController.removeListener(_filterPlants);
     super.dispose();
   }
 
-  void _filterPlants() {
-    final query = searchController.text.toLowerCase();
-    final selectedCategory = categories[selectedCategoryIndex];
+  // void _filterPlants() {
+  //   final query = searchController.text.toLowerCase();
+  //   final selectedCategory = categories[selectedCategoryIndex];
 
-    setState(() {
-      filteredPlants = plants.where((plant) {
-        final nameLower = plant.name.toLowerCase();
-        final matchesName = nameLower.contains(query);
-        final matchesCategory =
-            selectedCategory == 'All' || plant.category == selectedCategory;
-        return matchesName && matchesCategory;
-      }).toList();
-    });
-  }
+  //   setState(() {
+  //     filteredPlants = plantsDataDummy.where((plant) {
+  //       final nameLower = plant.name.toLowerCase();
+  //       final matchesName = nameLower.contains(query);
+  //       final matchesCategory = selectedCategory == 'All' || plant.category == selectedCategory;
+  //       return matchesName && matchesCategory;
+  //     }).toList();
+  //   });
+  // }
 
   void _updateFavoriteIconState() {
-    for (int i = 0; i < plants.length; i++) {
-      isIconClickedList[i] = favoritePlants.contains(plants[i]);
+    for (int i = 0; i < plantsDataDummy.length; i++) {
+      isIconClickedList[i] = favoritePlants.contains(plantsDataDummy[i]);
     }
   }
 
@@ -66,25 +70,38 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(children: [
-          buildHeader(
-            context: context,
-            profileImagePath: "assets/images/profile.png",
-            welcomeText: "Welcome",
-            userName: "Jona",
-            notificationImagePath: "assets/images/gravity-ui_bell-dot.png",
-            locationText: "Surat, Gujarat, India",
-            locationIcon: Icons.location_on_outlined,
-            locationIconColor: Color(0xff98A2B3),
-            locationTextColor: Color(0xff98A2B3),
-          ),
-          SizedBox(height: 15.h),
-          searchBar(context),
-          SizedBox(height: 15.h),
-          categoryItems(context),
-          SizedBox(height: 15.h),
-          cardView(context),
-        ]),
+        child: Consumer<HomeProviderScreen>(
+          builder: (context, favoriteScreenProvider, child) {
+            return Column(
+              children: [
+                buildHeader(
+                  context: context,
+                  profileImagePath: "assets/images/profile.png",
+                  welcomeText: "Welcome",
+                  userName: "Jona",
+                  notificationImagePath:
+                      "assets/images/gravity-ui_bell-dot.png",
+                  locationText: "Surat, Gujarat, India",
+                  locationIcon: Icons.location_on_outlined,
+                  locationIconColor: Color(0xff98A2B3),
+                  locationTextColor: Color(0xff98A2B3),
+                ),
+                SizedBox(height: 15.h),
+                searchBar(
+                    context: context,
+                    favoriteScreenProvider: favoriteScreenProvider),
+                SizedBox(height: 15.h),
+                categoryItems(
+                    context: context,
+                    favoriteScreenProvider: favoriteScreenProvider),
+                SizedBox(height: 15.h),
+                cardView(
+                    context: context,
+                    favoriteScreenProvider: favoriteScreenProvider),
+              ],
+            );
+          },
+        ),
       ),
       resizeToAvoidBottomInset: false,
     );
@@ -194,7 +211,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget searchBar(BuildContext context) {
+  Widget searchBar({
+    required BuildContext context,
+    required HomeProviderScreen favoriteScreenProvider,
+  }) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10.w),
       padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -205,7 +225,10 @@ class _HomeScreenState extends State<HomeScreen> {
         color: Color(0xffF2F4F7),
       ),
       child: TextField(
-        controller: searchController,
+        controller: favoriteScreenProvider.searchController,
+        onChanged: (value) {
+          favoriteScreenProvider.searchData(value: value);
+        },
         decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.search,
@@ -213,8 +236,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           suffixIcon: GestureDetector(
             onTap: () {
-              searchController.clear();
-              _filterPlants();
+              favoriteScreenProvider.searchController.clear();
+              // _filterPlants();
             },
             child: Icon(
               Icons.highlight_remove,
@@ -231,7 +254,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget categoryItems(BuildContext context) {
+  Widget categoryItems({
+    required BuildContext context,
+    required HomeProviderScreen favoriteScreenProvider,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -251,9 +277,11 @@ class _HomeScreenState extends State<HomeScreen> {
           height: 42.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: categories.length,
+            itemCount: favoriteScreenProvider.categories.length,
             itemBuilder: (context, index) {
-              return buildCategoryItem(index, categories[index]);
+              return buildCategoryItem(
+                  index, favoriteScreenProvider.categories[index],
+                  favoriteScreenProvider: favoriteScreenProvider);
             },
           ),
         ),
@@ -261,19 +289,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildCategoryItem(int index, String categoryName) {
+  Widget buildCategoryItem(
+    int index,
+    String categoryName, {
+    required HomeProviderScreen favoriteScreenProvider,
+  }) {
     return GestureDetector(
-      onTap: () => setState(() {
-        for (int i = 0; i < isCategoryClicked.length; i++) {
-          if (i == index) {
-            isCategoryClicked[i] = true;
-          } else {
-            isCategoryClicked[i] = false;
-          }
-        }
-        selectedCategoryIndex = index;
-        _filterPlants();
-      }),
+      onTap: () => favoriteScreenProvider.updateCatogryData(index: index),
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8),
         child: Container(
@@ -281,19 +303,22 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.r),
-            color: isCategoryClicked[index]
+            color: favoriteScreenProvider.selectedCategoryIndex == index
                 ? Color(0xff475E3E)
                 : Colors.transparent,
-            border: isCategoryClicked[index]
+            border: favoriteScreenProvider.selectedCategoryIndex == index
                 ? null
-                : Border.all(color: Color(0xffD0D5DD)),
+                : Border.all(
+                    color: Color(0xffD0D5DD),
+                  ),
           ),
           child: Center(
             child: Text(
               categoryName,
               style: TextStyle(
-                color:
-                    isCategoryClicked[index] ? Colors.white : Color(0xffD0D5DD),
+                color: favoriteScreenProvider.selectedCategoryIndex == index
+                    ? Colors.white
+                    : Color(0xffD0D5DD),
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
               ),
@@ -304,10 +329,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget cardView(BuildContext context) {
+  Widget cardView(
+      {required BuildContext context,
+      required HomeProviderScreen favoriteScreenProvider}) {
     return Expanded(
       child: GridView.builder(
-        itemCount: filteredPlants.length,
+        itemCount: favoriteScreenProvider.filteredPlants.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.60,
@@ -316,27 +343,34 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         padding: EdgeInsets.all(10.w),
         itemBuilder: (context, index) {
-          PlantModel plant = filteredPlants[index];
+          PlantModel plant = favoriteScreenProvider.filteredPlants[index];
           return buildCard(
-            context,
-            plant,
-            index,
+            context: context,
+            plant: plant,
+            index: index,
+            favoriteScreenProvider: favoriteScreenProvider,
           );
         },
       ),
     );
   }
 
-  Widget buildCard(BuildContext context, PlantModel plant, int index) {
+  Widget buildCard({
+    required BuildContext context,
+    required PlantModel plant,
+    required int index,
+    required HomeProviderScreen favoriteScreenProvider,
+  }) {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => PlantDetailsScreen(
             args: PlantDetailsLikeModel(
-                plant: plant,
-                onFavoriteToggle: (isFavorite) {},
-                isFavorite: isIconClickedList[index]),
+              plant: plant,
+              onFavoriteToggle: (isFavorite) {},
+              isFavorite: isIconClickedList[index],
+            ),
           ),
         ),
       ),
@@ -406,16 +440,8 @@ class _HomeScreenState extends State<HomeScreen> {
               right: 05,
               top: 10,
               child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isIconClickedList[index] = !isIconClickedList[index];
-                    if (isIconClickedList[index]) {
-                      favoritePlants.add(plant);
-                    } else {
-                      favoritePlants.remove(plant);
-                    }
-                  });
-                },
+                onTap: () =>
+                    favoriteScreenProvider.updateFavoriteData(id: plant.id),
                 child: CircleAvatar(
                   maxRadius: 15,
                   minRadius: 15,
@@ -423,7 +449,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Icon(
                     Icons.favorite,
                     size: 20,
-                    color: isIconClickedList[index]
+                    color: plant.isFavourite
                         ? Colors.red
                         : Color.fromARGB(255, 255, 255, 255),
                   ),
@@ -449,7 +475,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-
-
 }
