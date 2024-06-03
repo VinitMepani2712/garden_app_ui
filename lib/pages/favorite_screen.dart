@@ -19,10 +19,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         title: Text('Favourite Screen'),
       ),
       body: Consumer<HomeProviderScreen>(
-        builder: (context, favoriteScreenProvider, child) {
+        builder: (context, homeScreenProvider, child) {
           return Column(
             children: [
-              Expanded(child: buildCard(favoriteScreenProvider)),
+              Expanded(
+                child: buildCard(homeScreenProvider),
+              ),
             ],
           );
         },
