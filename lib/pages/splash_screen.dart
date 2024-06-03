@@ -2,9 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:garden_app_ui/bottombar/bottom_nav_bar.dart';
 import 'package:shape_of_view_null_safe/shape_of_view_null_safe.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToHome();
+  }
+
+  _navigateToHome() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('hasOpenedApp', true);
+    await Future.delayed(
+        Duration(seconds: 3)); // Simulate a splash screen delay
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BottomNavBarScreen(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
