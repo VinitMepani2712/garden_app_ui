@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:garden_app_ui/pages/splash_screen.dart';
+import 'package:garden_app_ui/provider/cart_screen_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'provider/homes_screen_provider.dart';
@@ -9,11 +10,14 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => HomeProviderScreen()),
-        //     ChangeNotifierProvider(create: (context) => HomeScreenProvider()),
+        ChangeNotifierProvider(
+          create: (context) => HomeProviderScreen(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CartProvider(),
+        ),
       ],
       child: MyApp(),
-   
     ),
   );
 }

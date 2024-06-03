@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:garden_app_ui/model/plant_details_model.dart';
+import 'package:provider/provider.dart';
 import '../model/cart_model.dart';
-import '../model/globals.dart'; // Import the global variables
+import '../model/globals.dart';
+import '../provider/cart_screen_provider.dart'; // Import the global variables
 
 class PlantDetailsScreen extends StatefulWidget {
   final PlantDetailsLikeModel args;
@@ -65,7 +67,9 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
             backgroundColor: Color(0xff475E3E),
             duration: Duration(seconds: 2),
           );
-
+          Provider.of<CartProvider>(context, listen: false).addItem(
+            CartItem(plant: widget.args.plant, quantity: _counter),
+          );
           cartItems.add(CartItem(plant: widget.args.plant, quantity: _counter));
 
           ScaffoldMessenger.of(context).showSnackBar(snackBar);

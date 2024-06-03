@@ -1,62 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import '../model/cart_model.dart';
+import '../provider/cart_screen_provider.dart';
 
-class CartScreen extends StatefulWidget {
-  @override
-  _CartScreenState createState() => _CartScreenState();
-}
-
-class _CartScreenState extends State<CartScreen> {
-  void _incrementQuantity(CartItem item) {
-    setState(() {
-      item.quantity++;
-    });
-  }
-
-  void _decrementQuantity(CartItem item) {
-    setState(() {
-      if (item.quantity > 1) {
-        item.quantity--;
-      }
-    });
-  }
-
-  void _removeItem(CartItem item) {
-    setState(() {
-      cartItems.remove(item);
-    });
-  }
-
+class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Cart'),
       ),
-      body: cartItems.isEmpty
-          ? Center(
-              child: Text('Your cart is empty'),
-            )
-          : ListView.builder(
-              padding: EdgeInsets.all(10.0),
-              itemCount: cartItems.length,
-              itemBuilder: (context, index) {
-                final cartItem = cartItems[index];
-                return _buildCartItem(cartItem);
-              },
+      body: Consumer<CartProvider>(
+        builder: (context, cartProvider, child) {
+          return cartProvider.items.isEmpty
+              ? Center(
+                  child: Text('Your cart is empty'),
+                )
+              : ListView.builder(
+                  padding: EdgeInsets.all(10.0),
+                  itemCount: cartProvider.items.length,
+                  itemBuilder: (context, index) {
+                    final cartItem = cartProvider.items[index];
+                    return _buildCartItem(cartItem, context);
+                  },
+                );
+        },
+      ),
+      bottomNavigationBar: Consumer<CartProvider>(
+        builder: (context, cartProvider, child) {
+          return Container(
+            padding: EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 10.0,
+                  spreadRadius: 2.0,
+                ),
+              ],
             ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: ElevatedButton(
-          onPressed: () {},
-          child: Text('Checkout'),
-        ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Total Price: \u{20B9}${cartProvider.totalPrice.toStringAsFixed(2)}',
+                  style:
+                      TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10.h),
+                ElevatedButton(
+                  onPressed: () {
+                    // Handle checkout
+                  },
+                  child: Text('Checkout'),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildCartItem(CartItem cartItem) {
+  Widget _buildCartItem(CartItem cartItem, BuildContext context) {
     return Card(
       elevation: 2.0,
       child: Padding(
@@ -88,11 +97,27 @@ class _CartScreenState extends State<CartScreen> {
                   SizedBox(height: 5.h),
                   Text('\u{20B9}${cartItem.plant.price}'),
                   SizedBox(height: 5.h),
-                  _buildQuantityControl(cartItem),
+                  _buildQuantityControl(cartItem, context),
                   SizedBox(height: 5.h),
                   ElevatedButton(
-                    onPressed: () => _removeItem(cartItem),
-                    child: Text('Remove'),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.r),
+                          side: BorderSide(color: Colors.red),
+                        ),
+                      ),
+                      backgroundColor: MaterialStateProperty.all(
+                        Color(0xffF0F4EF),
+                      ),
+                    ),
+                    onPressed: () =>
+                        Provider.of<CartProvider>(context, listen: false)
+                            .removeItem(cartItem),
+                    child: Text(
+                      'Remove',
+                      style: TextStyle(color: Colors.red),
+                    ),
                   ),
                 ],
               ),
@@ -103,7 +128,7 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildQuantityControl(CartItem cartItem) {
+  Widget _buildQuantityControl(CartItem cartItem, BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: Color(0xffF0F4EF),
@@ -116,7 +141,8 @@ class _CartScreenState extends State<CartScreen> {
             backgroundColor: Color(0xffB5C9AD),
             child: IconButton(
               icon: Icon(Icons.remove),
-              onPressed: () => _decrementQuantity(cartItem),
+              onPressed: () => Provider.of<CartProvider>(context, listen: false)
+                  .decrementQuantity(cartItem),
             ),
           ),
           SizedBox(width: 5.w),
@@ -126,7 +152,8 @@ class _CartScreenState extends State<CartScreen> {
             backgroundColor: Color(0xffB5C9AD),
             child: IconButton(
               icon: Icon(Icons.add, color: Colors.white),
-              onPressed: () => _incrementQuantity(cartItem),
+              onPressed: () => Provider.of<CartProvider>(context, listen: false)
+                  .incrementQuantity(cartItem),
             ),
           ),
         ],
