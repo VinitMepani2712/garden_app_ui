@@ -1,69 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:garden_app_ui/model/category_model.dart';
-import 'package:garden_app_ui/pages/notifiction_page.dart';
-import 'package:garden_app_ui/pages/plant_deatils_screen.dart';
-import 'package:garden_app_ui/pages/profile_screen.dart';
-import 'package:garden_app_ui/model/globals.dart';
-import 'package:garden_app_ui/provider/favourite_screen_provider.dart';
 import 'package:provider/provider.dart';
-
-import '../model/plant_model.dart';
+import '../model/category_model.dart';
+import '../provider/homes_screen_provider.dart';
+import 'notifiction_page.dart';
+import 'profile_screen.dart';
+import 'plant_deatils_screen.dart';
 import '../model/plant_details_model.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key});
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late HomeProviderScreen favoriteScreenProvider;
-
-  List<bool> isIconClickedList = List.generate(100, (index) => false);
-
   @override
   void initState() {
     super.initState();
-    // filteredPlants = plantsDataDummy;
-    favoriteScreenProvider =
+    final favoriteScreenProvider =
         Provider.of<HomeProviderScreen>(context, listen: false);
     favoriteScreenProvider.installDataLoad();
-
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //   (timeStamp) {
-    //     favoriteScreenProvider.installDataLoad();
-    //   },
-    // );
-    // searchController.addListener(_filterPlants);
-    _updateFavoriteIconState();
-  }
-
-  @override
-  void dispose() {
-    // searchController.removeListener(_filterPlants);
-    super.dispose();
-  }
-
-  // void _filterPlants() {
-  //   final query = searchController.text.toLowerCase();
-  //   final selectedCategory = categories[selectedCategoryIndex];
-
-  //   setState(() {
-  //     filteredPlants = plantsDataDummy.where((plant) {
-  //       final nameLower = plant.name.toLowerCase();
-  //       final matchesName = nameLower.contains(query);
-  //       final matchesCategory = selectedCategory == 'All' || plant.category == selectedCategory;
-  //       return matchesName && matchesCategory;
-  //     }).toList();
-  //   });
-  // }
-
-  void _updateFavoriteIconState() {
-    for (int i = 0; i < plantsDataDummy.length; i++) {
-      isIconClickedList[i] = favoritePlants.contains(plantsDataDummy[i]);
-    }
   }
 
   @override
@@ -237,7 +195,6 @@ class _HomeScreenState extends State<HomeScreen> {
           suffixIcon: GestureDetector(
             onTap: () {
               favoriteScreenProvider.searchController.clear();
-              // _filterPlants();
             },
             child: Icon(
               Icons.highlight_remove,
@@ -348,7 +305,7 @@ class _HomeScreenState extends State<HomeScreen> {
             context: context,
             plant: plant,
             index: index,
-            favoriteScreenProvider: favoriteScreenProvider,
+            homeProviderScreen: favoriteScreenProvider,
           );
         },
       ),
@@ -359,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
     required BuildContext context,
     required PlantModel plant,
     required int index,
-    required HomeProviderScreen favoriteScreenProvider,
+    required HomeProviderScreen homeProviderScreen,
   }) {
     return GestureDetector(
       onTap: () => Navigator.push(
@@ -369,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
             args: PlantDetailsLikeModel(
               plant: plant,
               onFavoriteToggle: (isFavorite) {},
-              isFavorite: isIconClickedList[index],
+              isFavorite: homeProviderScreen.favoritePlants.contains(plant),
             ),
           ),
         ),
@@ -441,17 +398,17 @@ class _HomeScreenState extends State<HomeScreen> {
               top: 10,
               child: GestureDetector(
                 onTap: () =>
-                    favoriteScreenProvider.updateFavoriteData(id: plant.id),
+                    homeProviderScreen.updateFavoriteData(id: plant.id),
                 child: CircleAvatar(
-                  maxRadius: 15,
-                  minRadius: 15,
+                  maxRadius: 20,
+                  minRadius: 20,
                   backgroundColor: Color(0xffB5C9AD),
                   child: Icon(
                     Icons.favorite,
-                    size: 20,
-                    color: plant.isFavourite
+                    size: 30,
+                    color: homeProviderScreen.favoritePlants.contains(plant)
                         ? Colors.red
-                        : Color.fromARGB(255, 255, 255, 255),
+                        : Colors.white,
                   ),
                 ),
               ),

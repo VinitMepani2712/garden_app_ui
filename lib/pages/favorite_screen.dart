@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:garden_app_ui/model/globals.dart';
+import 'package:provider/provider.dart';
 import '../model/category_model.dart';
-import '../model/plant_details_model.dart';
+import '../provider/homes_screen_provider.dart';
 import 'plant_deatils_screen.dart';
+import '../model/plant_details_model.dart';
 
 class FavoriteScreen extends StatefulWidget {
   @override
@@ -11,24 +12,25 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  List<bool> isIconClickedList =
-      List.generate(favoritePlants.length, (index) => false);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Favourite Screen'),
       ),
-      body: Column(
-        children: [
-          Expanded(child: buildCard()),
-        ],
+      body: Consumer<HomeProviderScreen>(
+        builder: (context, favoriteScreenProvider, child) {
+          return Column(
+            children: [
+              Expanded(child: buildCard(favoriteScreenProvider)),
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget buildCard() {
+  Widget buildCard(HomeProviderScreen favoriteScreenProvider) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GridView.builder(
@@ -38,16 +40,17 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           crossAxisSpacing: 10.0,
           mainAxisSpacing: 10.0,
         ),
-        itemCount: favoritePlants.length,
+        itemCount: favoriteScreenProvider.favoritePlants.length,
         itemBuilder: (context, index) {
-          final plants = favoritePlants[index];
-          return buildPlantsCard(plants, index);
+          final plant = favoriteScreenProvider.favoritePlants[index];
+          return buildPlantsCard(plant, index, favoriteScreenProvider);
         },
       ),
     );
   }
 
-  Widget buildPlantsCard(PlantModel plant, int index) {
+  Widget buildPlantsCard(
+      PlantModel plant, int index, HomeProviderScreen homeScreenProvider) {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -127,17 +130,17 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               right: 10,
               child: InkWell(
                 onTap: () {
-                  setState(() {
-                    if (!isIconClickedList[index]) {
-                      favoritePlants.remove(plant);
-                    }
-                  });
+                  homeScreenProvider.updateFavoriteData(id: plant.id);
                 },
                 child: CircleAvatar(
                   maxRadius: 15,
                   minRadius: 15,
                   backgroundColor: Color(0xffB5C9AD),
-                  child: Icon(Icons.favorite, size: 20, color: Colors.red),
+                  child: Icon(
+                    Icons.favorite,
+                    size: 20,
+                    color: Colors.red,
+                  ),
                 ),
               ),
             ),

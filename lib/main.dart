@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:garden_app_ui/pages/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'provider/favourite_screen_provider.dart';
+import 'provider/homes_screen_provider.dart';
 
 void main() {
   runApp(

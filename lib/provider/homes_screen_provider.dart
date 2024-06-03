@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:garden_app_ui/model/category_model.dart';
-import 'package:garden_app_ui/model/plant_model.dart';
+import '../model/category_model.dart';
+import '../model/plant_model.dart';
 
-import '../model/globals.dart';
-
-class HomeProviderScreen extends ChangeNotifier {
+class HomeProviderScreen with ChangeNotifier {
   List<PlantModel> allPlantsData = [];
   List<PlantModel> filteredPlants = [];
+  List<PlantModel> favoritePlants = [];
   TextEditingController searchController = TextEditingController();
 
   List<String> categories = [
@@ -18,21 +17,6 @@ class HomeProviderScreen extends ChangeNotifier {
   ];
 
   int selectedCategoryIndex = 0;
-
-  List<int> _isIconClickedList =
-      List.generate(favoritePlants.length, (index) => 0);
-
-  List<int> get selectedPlant => _isIconClickedList;
-
-  void addPlant(int value) {
-    _isIconClickedList.add(value);
-    notifyListeners();
-  }
-
-  void removePlant(int value) {
-    _isIconClickedList.remove(value);
-    notifyListeners();
-  }
 
   void installDataLoad() {
     allPlantsData.addAll(plantsDataDummy);
@@ -52,8 +36,6 @@ class HomeProviderScreen extends ChangeNotifier {
     selectedCategoryIndex = index;
 
     for (var data in allPlantsData) {
-      print(data.category);
-      print(categories[index]);
       if (data.category == categories[index]) {
         filteredPlants.add(data);
       }
@@ -63,12 +45,15 @@ class HomeProviderScreen extends ChangeNotifier {
   }
 
   void updateFavoriteData({required int id}) {
-    List<PlantModel> tempData = [];
-
-    tempData.addAll(allPlantsData);
+    List<PlantModel> tempData = allPlantsData;
     for (var data in tempData) {
       if (data.id == id) {
         data.isFavourite = !data.isFavourite;
+        if (data.isFavourite) {
+          favoritePlants.add(data);
+        } else {
+          favoritePlants.removeWhere((plant) => plant.id == id);
+        }
       }
     }
     allPlantsData = tempData;
