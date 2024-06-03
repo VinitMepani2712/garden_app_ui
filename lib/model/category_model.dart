@@ -18,8 +18,6 @@ class PlantModel {
     required this.category,
     required this.isFavourite,
   });
-
-  
 }
 
 List<PlantModel> getPlantsByCategory(String category) {
@@ -28,4 +26,3 @@ List<PlantModel> getPlantsByCategory(String category) {
   }
   return plantsDataDummy.where((plant) => plant.category == category).toList();
 }
-
