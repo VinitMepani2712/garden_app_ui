@@ -22,7 +22,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         builder: (context, homeScreenProvider, child) {
           return Column(
             children: [
-              Expanded(
+              Expanded( 
                 child: buildCard(homeScreenProvider),
               ),
             ],

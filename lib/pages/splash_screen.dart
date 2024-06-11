@@ -22,7 +22,8 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('hasOpenedApp', true);
     await Future.delayed(
-        Duration(seconds: 3)); // Simulate a splash screen delay
+      Duration(seconds: 3),
+    );
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
